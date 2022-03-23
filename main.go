@@ -1,13 +1,13 @@
 package main
 
 import (
-	"agile-helm/helm/v3/pkg/action"
-	"agile-helm/pkg"
+	"agile-helm/pkg/action"
+	"agile-helm/ahelm"
 	"fmt"
 )
 
 func main() {
-	actcfg, err := pkg.GetActionConfig("agile-helm")
+	actcfg, err := ahelm.GetActionConfig("agile-helm")
 	if err != nil {
 		fmt.Println(err)
 		return
