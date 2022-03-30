@@ -2,12 +2,12 @@ package main
 
 import (
 	"agile-helm/pkg/action"
-	"agile-helm/ahelm"
+	"agile-helm/pkg/actioncfg"
 	"fmt"
 )
 
 func main() {
-	actcfg, err := ahelm.GetActionConfig("agile-helm")
+	actcfg, err := actioncfg.InClusterActionCfg("helm-test")
 	if err != nil {
 		fmt.Println(err)
 		return

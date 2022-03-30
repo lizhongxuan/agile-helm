@@ -1,4 +1,4 @@
-package ahelm
+package actioncfg
 
 import (
 	"fmt"
@@ -8,6 +8,7 @@ import (
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/restmapper"
 	"k8s.io/client-go/tools/clientcmd"
+	clientcmdapi "k8s.io/client-go/tools/clientcmd/api"
 )
 
 // Getter implements k8s.io/cli-runtime/ahelm/genericclioptions.RESTClientGetter interface.
@@ -53,8 +54,36 @@ func (c *Getter) ToRESTConfig() (*rest.Config, error) {
 	return c.c.ClientConfig()
 }
 
-func NewGetter(cfg clientcmd.ClientConfig) *Getter {
-	return &Getter{
-		c: cfg,
+func NewGetter(cfg *rest.Config)(*Getter,error)   {
+	name:= "agilehelm"
+	apicfg := &clientcmdapi.Config{
+		Kind:           "Config",
+		APIVersion:     "v1",
+		CurrentContext: name,
+		Preferences:    *clientcmdapi.NewPreferences(),
+		Contexts: map[string]*clientcmdapi.Context{
+			name: {
+				Cluster:  name,
+				AuthInfo: name,
+			},
+		},
+		Clusters: map[string]*clientcmdapi.Cluster{
+			name: {
+				Server:                cfg.Host,
+				InsecureSkipTLSVerify: true,
+			},
+		},
+		AuthInfos: map[string]*clientcmdapi.AuthInfo{
+			name:{
+				Token:     cfg.BearerToken,
+				TokenFile: cfg.BearerTokenFile,
+				ClientCertificateData: cfg.CertData,
+				ClientKeyData:         cfg.KeyData,
+			},
+		},
 	}
+
+	return &Getter{
+		c: clientcmd.NewDefaultClientConfig(*apicfg, nil),
+	},nil
 }
