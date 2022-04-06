@@ -313,7 +313,7 @@ func GetVersionSet(client discovery.ServerResourcesInterface) (chartutil.Version
 		return chartutil.DefaultVersionSet, errors.Wrap(err, "could not get apiVersions from Kubernetes")
 	}
 
-	// FIXME: The Kubernetes test fixture for cli appears to always return nil
+	// FIXME: The Kubernetes example fixture for cli appears to always return nil
 	// for calls to Discovery().ServerGroupsAndResources(). So in this case, we
 	// return the default API list. This is also a safe value to return in any
 	// other odd-ball case.

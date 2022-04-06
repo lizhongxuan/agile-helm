@@ -31,11 +31,11 @@ import (
 
 // ReleaseTesting is the action for testing a release.
 //
-// It provides the implementation of 'helm test'.
+// It provides the implementation of 'helm example'.
 type ReleaseTesting struct {
 	cfg     *Configuration
 	Timeout time.Duration
-	// Used for fetching logs from test pods
+	// Used for fetching logs from example pods
 	Namespace string
 	Filters   map[string][]string
 }
@@ -48,7 +48,7 @@ func NewReleaseTesting(cfg *Configuration) *ReleaseTesting {
 	}
 }
 
-// Run executes 'helm test' against the given release.
+// Run executes 'helm example' against the given release.
 func (r *ReleaseTesting) Run(name string) (*release.Release, error) {
 	if err := r.cfg.KubeClient.IsReachable(); err != nil {
 		return nil, err
@@ -98,7 +98,7 @@ func (r *ReleaseTesting) Run(name string) (*release.Release, error) {
 	return rel, r.cfg.Releases.Update(rel)
 }
 
-// GetPodLogs will write the logs for all test pods in the given release into
+// GetPodLogs will write the logs for all example pods in the given release into
 // the given writer. These can be immediately output to the user or captured for
 // other uses
 func (r *ReleaseTesting) GetPodLogs(out io.Writer, rel *release.Release) error {

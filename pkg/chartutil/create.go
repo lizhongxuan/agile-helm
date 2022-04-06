@@ -67,8 +67,8 @@ const (
 	NotesName = TemplatesDir + sep + "NOTES.txt"
 	// HelpersName is the name of the example helpers file.
 	HelpersName = TemplatesDir + sep + "_helpers.tpl"
-	// TestConnectionName is the name of the example test file.
-	TestConnectionName = TemplatesTestsDir + sep + "test-connection.yaml"
+	// TestConnectionName is the name of the example example file.
+	TestConnectionName = TemplatesTestsDir + sep + "example-connection.yaml"
 )
 
 // maxChartNameLength is lower than the limits we know of with certain file systems,
@@ -490,11 +490,11 @@ Create the name of the service account to use
 const defaultTestConnection = `apiVersion: v1
 kind: Pod
 metadata:
-  name: "{{ include "<CHARTNAME>.fullname" . }}-test-connection"
+  name: "{{ include "<CHARTNAME>.fullname" . }}-example-connection"
   labels:
     {{- include "<CHARTNAME>.labels" . | nindent 4 }}
   annotations:
-    "agile-helm/hook": test
+    "agile-helm/hook": example
 spec:
   containers:
     - name: wget
@@ -641,7 +641,7 @@ func Create(name, dir string) (string, error) {
 			content: transform(defaultHelpers, name),
 		},
 		{
-			// test-connection.yaml
+			// example-connection.yaml
 			path:    filepath.Join(cdir, TestConnectionName),
 			content: transform(defaultTestConnection, name),
 		},

@@ -73,8 +73,8 @@ func Get() BuildInfo {
 		GoVersion:    runtime.Version(),
 	}
 
-	// HACK(bacongobbler): strip out GoVersion during a test run for consistent test output
-	if flag.Lookup("test.v") != nil {
+	// HACK(bacongobbler): strip out GoVersion during a example run for consistent example output
+	if flag.Lookup("example.v") != nil {
 		v.GoVersion = ""
 	}
 	return v

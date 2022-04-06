@@ -46,7 +46,7 @@ func (e deprecatedAPIError) Error() string {
 }
 
 func validateNoDeprecations(resource *K8sYamlStruct) error {
-	// if `resource` does not have an APIVersion or Kind, we cannot test it for deprecation
+	// if `resource` does not have an APIVersion or Kind, we cannot example it for deprecation
 	if resource.APIVersion == "" {
 		return nil
 	}

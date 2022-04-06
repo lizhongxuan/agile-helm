@@ -33,7 +33,7 @@ const (
 	HookPostUpgrade  HookEvent = "post-upgrade"
 	HookPreRollback  HookEvent = "pre-rollback"
 	HookPostRollback HookEvent = "post-rollback"
-	HookTest         HookEvent = "test"
+	HookTest         HookEvent = "example"
 )
 
 func (x HookEvent) String() string { return string(x) }

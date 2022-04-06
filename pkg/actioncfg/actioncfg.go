@@ -28,9 +28,10 @@ func InClusterActionCfg(ns string) (*action.Configuration, error) {
 	return actionConfig, nil
 }
 
-func BasicActionCfg(ns,apiAuthBasic string)(*action.Configuration, error)   {
+func BasicActionCfg(ns,host,apiAuthBasic string)(*action.Configuration, error)   {
 	cfg := &rest.Config{}
 	cfg.Insecure = true
+	cfg.Host = host
 	usernameColonPassword, err := base64.StdEncoding.DecodeString(apiAuthBasic)
 	if err != nil {
 		return nil, err
@@ -55,10 +56,11 @@ func BasicActionCfg(ns,apiAuthBasic string)(*action.Configuration, error)   {
 	return actionConfig, nil
 }
 
-func TokenActionCfg(ns,apiAuthBasic string)(*action.Configuration, error)    {
+func TokenActionCfg(ns,host,apiAuthBasic string)(*action.Configuration, error)    {
 	cfg := &rest.Config{}
 	cfg.BearerToken = apiAuthBasic
 	cfg.Insecure = true
+	cfg.Host = host
 	getter,err := NewGetter(cfg)
 	if err !=nil {
 		log.Error(err, ns)
@@ -72,7 +74,7 @@ func TokenActionCfg(ns,apiAuthBasic string)(*action.Configuration, error)    {
 	return actionConfig, nil
 }
 
-func TLSActionCfg(ns,apiClientCertificateData,apiClientKeyData string,apiClusterAuthData ...string)(*action.Configuration, error)   {
+func TLSActionCfg(ns,host,apiClientCertificateData,apiClientKeyData string,apiClusterAuthData ...string)(*action.Configuration, error)   {
 	certData, err := base64.StdEncoding.DecodeString(apiClientCertificateData)
 	if err != nil {
 		return nil, err
@@ -84,6 +86,7 @@ func TLSActionCfg(ns,apiClientCertificateData,apiClientKeyData string,apiCluster
 	cfg := &rest.Config{}
 	cfg.CertData = certData
 	cfg.KeyData = keyData
+	cfg.Host = host
 	if  len(apiClusterAuthData) != 0 {
 		cadata, err := base64.StdEncoding.DecodeString(apiClusterAuthData[0])
 		if err != nil {

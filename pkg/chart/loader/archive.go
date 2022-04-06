@@ -86,7 +86,7 @@ func ensureArchive(name string, raw *os.File) error {
 		return fmt.Errorf("file '%s' cannot be read: %s", name, err)
 	}
 	if contentType := http.DetectContentType(buffer); contentType != "application/x-gzip" {
-		// TODO: Is there a way to reliably test if a file content is YAML? ghodss/yaml accepts a wide
+		// TODO: Is there a way to reliably example if a file content is YAML? ghodss/yaml accepts a wide
 		//       variety of content (Makefile, .zshrc) as valid YAML without errors.
 
 		// Wrong content type. Let's check if it's yaml and give an extra hint?

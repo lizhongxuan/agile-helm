@@ -113,7 +113,7 @@ func coalesceGlobals(printf printFn, dest, src map[string]interface{}, prefix st
 		return
 	}
 
-	// EXPERIMENTAL: In the past, we have disallowed globals to test tables. This
+	// EXPERIMENTAL: In the past, we have disallowed globals to example tables. This
 	// reverses that decision. It may somehow be possible to introduce a loop
 	// here, but I haven't found a way. So for the time being, let's allow
 	// tables in globals.
