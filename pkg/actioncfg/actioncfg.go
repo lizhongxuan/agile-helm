@@ -21,10 +21,7 @@ func InClusterActionCfg(ns string) (*action.Configuration, error) {
 		return nil, err
 	}
 	actionConfig := new(action.Configuration)
-	if err := actionConfig.Init(getter, ns, "", logf); err != nil {
-		log.Error(err, ns)
-		return nil, err
-	}
+	actionConfig.Init(getter, ns, logf)
 	return actionConfig, nil
 }
 
@@ -49,10 +46,7 @@ func BasicActionCfg(ns,host,apiAuthBasic string)(*action.Configuration, error)  
 		return nil, err
 	}
 	actionConfig := new(action.Configuration)
-	if err := actionConfig.Init(getter, ns, "", logf); err != nil {
-		log.Error(err, ns)
-		return nil, err
-	}
+	actionConfig.Init(getter, ns, logf)
 	return actionConfig, nil
 }
 
@@ -67,10 +61,7 @@ func TokenActionCfg(ns,host,apiAuthBasic string)(*action.Configuration, error)  
 		return nil, err
 	}
 	actionConfig := new(action.Configuration)
-	if err := actionConfig.Init(getter, ns, "", logf); err != nil {
-		log.Error(err, ns)
-		return nil, err
-	}
+	actionConfig.Init(getter, ns, logf)
 	return actionConfig, nil
 }
 
@@ -103,10 +94,7 @@ func TLSActionCfg(ns,host,apiClientCertificateData,apiClientKeyData string,apiCl
 		return nil, err
 	}
 	actionConfig := new(action.Configuration)
-	if err := actionConfig.Init(getter, ns, "", logf); err != nil {
-		log.Error(err, ns)
-		return nil, err
-	}
+	actionConfig.Init(getter, ns, logf)
 	return actionConfig, nil
 }
 

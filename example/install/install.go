@@ -3,6 +3,7 @@ package main
 import (
 	"agile-helm/pkg/action"
 	"agile-helm/pkg/actioncfg"
+	"agile-helm/pkg/chart/loader"
 	"fmt"
 )
 
@@ -15,11 +16,21 @@ func main()  {
 		fmt.Println(err)
 		return
 	}
-	listaction := action.NewList(actcfg)
-	list,err:=listaction.Run()
+
+	chartData, err := loader.Load("/Users/zhongxuan/go/src/agile-helm/testfile/local-path-provisioner@0.0.20")
 	if err != nil {
 		fmt.Println(err)
 		return
 	}
-	fmt.Println(list)
+
+	vals := map[string]interface{}{}
+	install := action.NewInstall(actcfg)
+	install.ReleaseName = "local-lzx"
+	install.Namespace = "agile-helm"
+	rls,err:=install.Run(chartData,vals)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	fmt.Println(rls)
 }

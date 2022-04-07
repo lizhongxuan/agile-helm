@@ -19,7 +19,6 @@ package action
 import (
 	"bytes"
 	"fmt"
-	"os"
 	"path"
 	"path/filepath"
 	"regexp"
@@ -362,59 +361,18 @@ func (cfg *Configuration) recordRelease(r *release.Release) {
 }
 
 // Init initializes the action configuration
-func (cfg *Configuration) Init(getter genericclioptions.RESTClientGetter, namespace, helmDriver string, log DebugLog) error {
+func (cfg *Configuration) Init(getter genericclioptions.RESTClientGetter,ns string, log DebugLog)  {
 	kc := kube.New(getter)
 	kc.Log = log
 
 	lazyClient := &lazyClient{
-		namespace: namespace,
 		clientFn:  kc.Factory.KubernetesClientSet,
+		namespace: ns,
 	}
-
-	var store *storage.Storage
-	switch helmDriver {
-	case "secret", "secrets", "":
-		d := driver.NewSecrets(newSecretClient(lazyClient))
-		d.Log = log
-		store = storage.Init(d)
-	case "configmap", "configmaps":
-		d := driver.NewConfigMaps(newConfigMapClient(lazyClient))
-		d.Log = log
-		store = storage.Init(d)
-	case "memory":
-		var d *driver.Memory
-		if cfg.Releases != nil {
-			if mem, ok := cfg.Releases.Driver.(*driver.Memory); ok {
-				// This function can be called more than once (e.g., helm list --all-namespaces).
-				// If a memory driver was already initialized, re-use it but set the possibly new namespace.
-				// We re-use it in case some releases where already created in the existing memory driver.
-				d = mem
-			}
-		}
-		if d == nil {
-			d = driver.NewMemory()
-		}
-		d.SetNamespace(namespace)
-		store = storage.Init(d)
-	case "sql":
-		d, err := driver.NewSQL(
-			os.Getenv("HELM_DRIVER_SQL_CONNECTION_STRING"),
-			log,
-			namespace,
-		)
-		if err != nil {
-			panic(fmt.Sprintf("Unable to instantiate SQL driver: %v", err))
-		}
-		store = storage.Init(d)
-	default:
-		// Not sure what to do here.
-		panic("Unknown driver in HELM_DRIVER: " + helmDriver)
-	}
-
+	d := driver.NewSecrets(newSecretClient(lazyClient))
+	d.Log = log
 	cfg.RESTClientGetter = getter
 	cfg.KubeClient = kc
-	cfg.Releases = store
+	cfg.Releases = storage.Init(d)
 	cfg.Log = log
-
-	return nil
 }
